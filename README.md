@@ -2,20 +2,20 @@
 
 # Index
 
-1. Base
-   1. Official Documentation
-   2. What's docker
-   3. How to install
-   4. Why Docker != VM && Docker > VM
-   5. A word about shell
+1. [Base](./README.md#Base)
+   1. [Official Documentation](./README.md#Official-Documentation)
+   2. [What's docker](./README.md#Whats-docker)
+   3. [How to install](./README.md#How-to-install)
+   4. [Why Docker != VM && Docker > VM](./README.md#Why-Docker--VM--Docker--VM)
+   5. [A word about shell](./README.md#A-word-about-shell)
 
-2. Level of inception (**where the fun begins**)
-   1. Level 3: Dockerfile
-   2. Level 4: entrypoint
-   3. Level 2: docker-compose.yaml
-   4. Level 1: Makefile
+2. [Level of inception](./README.md#Level-of-inception) (**where the fun begins**)
+   1. [Level 3: Dockerfile](./README.md#Level-3-Dockerfile)
+   2. [Level 4: entrypoint](./README.md#Level-4-entrypoint)
+   3. [Level 2: docker-compose.yaml](./README.md#Level-2-docker-compose.yaml)
+   4. [Level 1: Makefile](./README.md#Level-1-Makefile)
 
-3. Final word
+3. [Final word](./README.md#Final-Word)
 
 # Base
 
@@ -161,14 +161,13 @@ services, just before the main application / service launch.
 Sometimes entrypoint are mandatory because configuration need to be perfomed on
 a running services, ex: MariaDB.
 
-We have to do 3 step in the [Dockerfile]() to make it work with the entrypoint:
+We have to do 3 step in the [Dockerfile](./rsc/4_Entrypoint/Dockerfile) to make it work with the entrypoint:
 1. `COPY` the the entrypoint into the container
 2. set the `ENTRYPOINT` where the entrypoint script was copied on the container
 3. set the default args (with `CMD`) for the `ENTYPOINT`
 
 ---
 
-[Dockerfile](./rsc/4_Entrypoint/Dockerfile)
 [entrypoint](./rsc/4_Entrypoint/entrypoint)
 
 ## Level 2: docker-compose.yaml
@@ -186,21 +185,20 @@ docker-compose.yaml should start with the `version` tag, they are
 - `volumes` configure how the named volumes behave
 
 
-We keep our from [python_server]() folder from the previous steps and we add an
-other [Dockerfile]() and his [entrypoint]() to simulate a client that will call
+We keep our from [python_server](./rsc/2_Compose/python_server) folder from the previous steps and we add an
+other [Dockerfile](./rsc/2_Compose/python_client/Dockerfile) and his [entrypoint](./rsc/2_Compose/python_client/entrypoint) to simulate a client that will call
 our server every 10 second.
 
 It's important to note that we reference 'python_server' as the host in the
 python_client entrypoint, this is possible thanks to docker compose seting up
 the hostname as the services name specified in the docker-compose.yaml
 
-> the [.env]() file has to be in the same directory as the docker-compose.yaml
+> the [.env](./rsc/2_Compose/.env) file has to be in the same directory as the docker-compose.yaml
 > or it should be specified with the `env_file` tag in the services
 
 ---
 
 [docker-compose.yaml](./rsc/2_Compose/docker-compose.yaml)
-[.env](./rsc/2_Compose/.env)
 
 Usefull `docker compose` commmand
 
@@ -236,12 +234,12 @@ even download file before the Dockerfile interact with it
 
 [Makefile](./rsc/1_Makefile/Makefile)
 
-
 # Final word
 
 I named the second part with level because i think, that this project as to be
 seen like this:
-(1) Makefile -> (2) docker-compose.yaml -> (3) Dockerfile -> (4) entrypoint
+Makefile (1) that control docker-compose.yaml (2) that manage Dockerfile (3)
+that launch entrypoint (4)
 
 Sorry for the confusion that could lead, but i think that is important to see
 this in this point of view
