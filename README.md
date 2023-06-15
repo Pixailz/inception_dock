@@ -1,6 +1,6 @@
 
 ![inception meme](./rsc/meme.png)
-[![brda-sil's 42 Inception Score](https://badge42.vercel.app/api/v2/cliwvvxq6001108m8aaj6wpxk/project/3106310)](https://github.com/JaeSeoKim/badge42)
+
 # Index
 
 1. [Base](./README.md#Base)
