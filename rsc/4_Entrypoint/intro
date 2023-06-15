@@ -1,0 +1,88 @@
+#!/bin/bash
+#^ '#!' this is what define a file as script
+# '#' is for the comment
+
+# VAR
+
+# var assignement, this as to be exactly formated like this, with the space
+# sticked to the variable names
+var_1=""
+
+# the use of double quote are greatly recommended when referencing a variable
+# var reference, can be 'bounded' with '${}'
+# this open you a new world, the Shell Parameter Expansion
+# See more here (https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
+# this one mean if var_1 is empty set it to value_1, usefull
+var_2="${var_1:-value_1}"
+
+# ARITHMETIC
+
+n=1
+# ee more here (https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html)
+printf "1 + 1 = %d\n" $((n + 1))
+
+# FLOW CONTROL
+
+# in bash we have:
+# the if (if two variable are the same)
+if [ "${var_1}" == "${var_2}" ]; then
+	printf "true\n"
+# the elif (check if /var/www/html is not a dir)
+elif [ ! -d /var/www/html ]; then
+	printf "false\n"
+# the else
+else
+	printf "other\n"
+# the little fi at the end
+fi
+
+# the while
+i=0
+while [ "${i}" -ne 10 ]; do
+	# quick way to increment
+	printf "i = %d\n" $((i++))
+done
+
+# this can be contracted with logic operator like so
+[ ! -d /var/www/html ] && printf "dir exist\n" || printf "dir don't exist\n"
+
+# FUNCTION
+
+function	arg_visu()
+{
+	# the bash keyword 'local' mean local to this function
+	# first arg passed
+	local	arg_1="${1}"
+	# all arguments passed
+	local	arg_all="${@}"
+	# all arguments from the second to the end
+	local	arg_from_2="${@:2}"
+	local	arg_nb="${#@}"
+
+	printf "arg_visu called\n"
+
+	if [ "${arg_nb}" != "0" ]; then
+		printf "arg_nb != 0\n"
+		# double quote here are important, to be interpreted as on argument
+		printf "arg_1 {%s}\n" "${arg_1}"
+		printf "arg_all\n"
+		# same here, no double quote to interpret arg_all as a list
+		# the '--' are here to tell printf where to stop searching for options
+		printf -- "- %s\n" ${arg_all}
+	else
+		printf "arg_nb == 0\n"
+	fi
+
+	# function don't return something, they usually simplify your life for basic
+	# tasks, like for exemple creating a dir.
+	# and if you have to, you can simply declare a var without the 'local'
+	# keyword and it will be accessible outside of the function
+	RETURN_VALUE="1234"
+}
+
+# function call
+arg_visu
+
+printf "Returned value %s\n" "${RETURN_VALUE}"
+
+arg_visu 1 2 3 4

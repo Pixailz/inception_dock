@@ -1,0 +1,7 @@
+#!/bin/ash
+
+# boucle while
+while [ 1 ]; do
+	printf "GET / HTTP/1.1\r\n\r\n" | nc python_server "${PYTHON_SERVER_PORT}"
+	sleep 2
+done

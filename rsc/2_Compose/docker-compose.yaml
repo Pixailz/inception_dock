@@ -1,0 +1,87 @@
+# version of the docker compose file
+version: "3.9"
+
+# DEFAULT CONF https://stackoverflow.com/a/65522511
+x-healthcheck_conf: &healthcheck_conf
+      interval: 1s
+      timeout: 1s
+      retries: 50
+
+# SERVICES part
+services:
+  # service name
+  python_server:
+    build:
+      # set where to find the Dockerfile root dir
+      context: "./python_server"
+      # set args at build time
+      args:
+        - PACKAGES=${PACKAGES}
+        - PYTHON_SERVER_PORT=${PYTHON_SERVER_PORT:-8080}
+    # bind port to host from container
+    ports:
+      # host_port:container_port
+      - ${PYTHON_SERVER_PORT:-8080}:${PYTHON_SERVER_PORT:-8080}
+    networks:
+      # name of the network
+      backend:
+        # specify the address of the container
+        ipv4_address: "13.37.42.10"
+    volumes:
+      # host_path|volume_name:container_path
+      - www_root:/var/www/html
+    # set a check to check if the service if healthy
+    healthcheck:
+      test: [ "CMD", "pgrep", "python3" ]
+      # this syntax replace the following line with what on top of this file
+      << : *healthcheck_conf
+
+  python_client:
+    build:
+      context: "./python_client"
+    # set the environment at run time
+    environment:
+      - PYTHON_SERVER_PORT=${PYTHON_SERVER_PORT:-8080}
+    # set a dependencies hierarchy
+    depends_on:
+      python_server:
+        # specify a condition is mandatory, as if not, it take a started
+        # services as condition, not an healthy services
+        condition: service_healthy
+    networks:
+      backend:
+        ipv4_address: "13.37.42.11"
+    volumes:
+      - www_root:/var/www/html
+    # healthcheck:
+    #   test: [ "CMD", "pgrep", "ash" ]
+    #   << : *healthcheck_conf
+
+# NETWORK part
+networks:
+  # name of the network
+  backend:
+    # you can stop here, or not as you wich, default settings are good
+    name: backend
+    driver: bridge
+    driver_opts:
+      # specify name on the host
+      com.docker.network.bridge.name: backend
+    # subneting config
+    ipam:
+      driver: default
+      config:
+        - subnet: 13.37.42.0/27
+          ip_range: 13.37.42.0/27
+          gateway: 13.37.42.1
+
+# VOLUMES part
+volumes:
+  # name of the volume
+  www_root:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      # path on the host
+      device: ./Shared

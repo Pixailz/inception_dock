@@ -1,0 +1,30 @@
+#!/bin/ash
+
+# print message with the result of a command
+printf "My Docker images ip $(hostname -i)\n"
+printf "I have been called with those args:\n"
+# print all arg passed
+printf -- "- '\x1b[31m%s\x1b[00m'\n" $@
+
+# if file /var/www/html/index.html is NOT found
+if [ ! -f /var/www/html/index.html ]; then
+	printf "Pyton3: init\n"
+
+	# if folder /var/www/html is NOT found then create it
+	[ ! -d /var/www/html ] && mkdir -p /var/www/html
+
+	# copy file on needed location
+	cp /run/index.html /var/www/html/index.html
+
+	# remove tmp file
+	rm -rf /run/index.html
+else
+	printf "Pyton3: init skipped\n"
+fi
+
+if [ "${#@}" != 0 ]; then
+	# execute arguments passed
+	exec $@
+else
+	python3 -m http.server -d /var/www/html "${PYTHON_SERVER_PORT}"
+fi
