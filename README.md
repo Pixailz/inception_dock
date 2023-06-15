@@ -15,6 +15,7 @@
    3. Level 2: docker-compose.yaml
    4. Level 1: Makefile
 
+3. Final word
 
 # Base
 
@@ -97,7 +98,7 @@ it can be found:
 - LVL3 Dockerfile: when a `RUN` inst is evaluated, this a `/bin/sh -c` by default
 - LVL4 entrypoint: this one is are pure shell script
 
-a little introduction can be found [here]()
+a little introduction can be found [here](./rsc/intro_bash)
 
 # Level of inception
 
@@ -122,7 +123,7 @@ support you.
 
 ---
 
-[exemple]()
+[Dockerfile](./rsc/3_Dockerfile/Dockerfile)
 
 Usefull `docker` commmand
 
@@ -167,7 +168,8 @@ We have to do 3 step in the [Dockerfile]() to make it work with the entrypoint:
 
 ---
 
-[exemple]()
+[Dockerfile](./rsc/4_Entrypoint/Dockerfile)
+[entrypoint](./rsc/4_Entrypoint/entrypoint)
 
 ## Level 2: docker-compose.yaml
 
@@ -197,7 +199,8 @@ the hostname as the services name specified in the docker-compose.yaml
 
 ---
 
-[exemples]()
+[docker-compose.yaml](./rsc/2_Compose/docker-compose.yaml)
+[.env](./rsc/2_Compose/.env)
 
 Usefull `docker compose` commmand
 
@@ -231,5 +234,17 @@ even download file before the Dockerfile interact with it
 
 ---
 
-[exemple]()
+[Makefile](./rsc/1_Makefile/Makefile)
 
+
+# Final word
+
+I named the second part with level because i think, that this project as to be
+seen like this:
+(1) Makefile -> (2) docker-compose.yaml -> (3) Dockerfile -> (4) entrypoint
+
+Sorry for the confusion that could lead, but i think that is important to see
+this in this point of view
+
+I hope you enjoyer, feel free to open issues / pull request to correct point or
+just my grammar.
