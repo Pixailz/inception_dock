@@ -20,4 +20,4 @@ COPY		--chown=root:root --chmod=744 entrypoint /run
 ENTRYPOINT	[ "/run/entrypoint" ]
 
 # set the argument passed to that program
-CMD [ "python3", "-m", "http.server", "-d", "/var/www/html", ${} ]
+CMD [ "python3", "-m", "http.server", "-d", "/var/www/html", "8080" ]
